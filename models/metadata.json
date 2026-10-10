@@ -1,0 +1,9 @@
+{
+  "best_model": "Linear SVM",
+  "dataset_source": "real: UCI SMS Spam Collection",
+  "dataset_rows": 5146,
+  "ham_count": 4504,
+  "spam_count": 642,
+  "test_samples": 1030,
+  "feature_count": 5000
+}

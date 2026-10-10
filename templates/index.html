@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Check an email for spam with a lightweight machine-learning classifier.">
+    <title>Email Spam Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="Email Shield home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5 12 13l8-5.5M5.5 5h13A1.5 1.5 0 0 1 20 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5v-11A1.5 1.5 0 0 1 5.5 5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span>Email<span class="brand-light">Shield</span></span>
+        </a>
+        <nav class="header-nav" aria-label="Main navigation">
+          <a href="#how-it-works">How it works</a>
+          <a href="#performance">Model insights</a>
+          <a class="nav-cta" href="#checker-title">Try it <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <section class="hero">
+        <div class="hero-copy-block">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR SMARTER SPAM CHECKER</p>
+          <h1>A calmer inbox<br>starts <span>with clarity.</span></h1>
+          <p class="hero-copy">Not sure about a message? Check it for spam signals in seconds with a lightweight machine-learning model.</p>
+          <a class="hero-link" href="#checker-title">Check a message <span aria-hidden="true">↓</span></a>
+          <div class="trust-note"><span class="trust-icon" aria-hidden="true">✓</span> No account needed. Just paste and check.</div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-orbit orbit-one"></div>
+          <div class="art-orbit orbit-two"></div>
+          <div class="art-spark spark-one">✦</div>
+          <div class="art-spark spark-two">✧</div>
+          <div class="mail-card">
+            <div class="mail-card-top"><span class="mail-dot"></span><span class="mail-dot"></span><span class="mail-dot"></span><span class="mail-label">MESSAGE SCAN</span></div>
+            <div class="mail-lines"><i></i><i></i><i></i></div>
+            <div class="scan-status"><span class="scan-check">✓</span><span><b>Looking good</b><small>Message checked</small></span><span class="scan-arrow">↗</span></div>
+          </div>
+          <div class="shield-illustration">
+            <svg viewBox="0 0 120 136" fill="none"><path d="M60 7 105 24v34c0 30-18.7 55.1-45 68C33.7 113.1 15 88 15 58V24L60 7Z" fill="url(#shieldFill)" stroke="white" stroke-width="5"/><path d="m40 67 13 13 28-30" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="shieldFill" x1="17" y1="9" x2="105" y2="121" gradientUnits="userSpaceOnUse"><stop stop-color="#91A8FF"/><stop offset="1" stop-color="#5668E8"/></linearGradient></defs></svg>
+          </div>
+          <div class="art-caption"><span class="caption-pulse"></span> Your message stays yours</div>
+        </div>
+      </section>
+
+      <section id="how-it-works" class="checker-card card" aria-labelledby="checker-title">
+        <div class="checker-intro">
+          <span class="step-mark">01</span>
+          <div>
+            <p class="eyebrow">QUICK MESSAGE CHECK</p>
+            <h2 id="checker-title">Let's take a closer look.</h2>
+            <p class="section-copy">Paste the message you're unsure about. We'll look for patterns often found in spam.</p>
+          </div>
+          <span class="privacy-pill"><span aria-hidden="true">◇</span> Private by design</span>
+        </div>
+        <form id="predict-form">
+          <label for="email-text">MESSAGE CONTENT</label>
+          <div class="textarea-wrap">
+            <span class="textarea-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="m4 7.5 8 5.5 8-5.5M5.5 5h13A1.5 1.5 0 0 1 20 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5v-11A1.5 1.5 0 0 1 5.5 5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <textarea id="email-text" name="text" maxlength="20000" rows="7" placeholder="Paste or type the email message here..." required></textarea>
+            <span class="textarea-hint">Your text is used only for this check.</span>
+          </div>
+          <div class="form-footer">
+            <span id="char-count">0 <span class="count-divider">/</span> 20,000 characters</span>
+            <button id="check-button" type="submit"><span>Check message</span><span class="button-arrow" aria-hidden="true">→</span></button>
+          </div>
+        </form>
+        <div id="result" class="result" role="status" aria-live="polite" hidden>
+          <div class="result-heading">
+            <span id="result-badge" class="badge"></span>
+            <span id="result-confidence"></span>
+          </div>
+          <div class="confidence-track" aria-label="Classification confidence">
+            <div id="confidence-bar" class="confidence-bar"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="insight-grid">
+        <article class="card keywords-card">
+          <div class="section-heading">
+            <span class="insight-icon keyword-icon" aria-hidden="true">✳</span>
+            <div class="insight-title"><p class="eyebrow">PATTERNS TO NOTICE</p><h2>Common spam signals</h2></div>
+            <span class="subtle-tag">MODEL INSIGHTS</span>
+          </div>
+          <div class="keyword-list">
+            {% for item in keywords %}
+            <span class="keyword">{{ item.keyword }}</span>
+            {% endfor %}
+          </div>
+          <p class="muted">These words appeared often in spam training examples. A word alone doesn't prove a message is spam.</p>
+        </article>
+        <article class="card about-card">
+          <div class="about-top"><span class="insight-icon model-icon" aria-hidden="true">◎</span><p class="eyebrow">BEHIND THE CHECK</p></div>
+          <h2>{{ best_model }}</h2>
+          <p class="muted">A text classification model trained on {{ dataset_source }}.</p>
+          <a class="text-link" href="#performance">Explore model performance <span aria-hidden="true">↗</span></a>
+        </article>
+      </section>
+
+      <section id="performance" class="card performance">
+        <div class="section-heading">
+          <div><p class="eyebrow">A TRANSPARENT LOOK</p><h2>How the models performed</h2><p class="section-copy">Compared on messages set aside during training.</p></div>
+          <span class="subtle-tag"><span class="table-dot"></span> HELD-OUT TEST SET</span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>False positives</th></tr>
+            </thead>
+            <tbody>
+              {% for row in comparison %}
+              <tr>
+                <td><span class="model-name"><span class="model-dot"></span>{{ row.model }}</span></td>
+                <td>{{ "%.1f"|format(row.accuracy|float * 100) }}%</td>
+                <td>{{ "%.1f"|format(row.precision|float * 100) }}%</td>
+                <td>{{ "%.1f"|format(row.recall|float * 100) }}%</td>
+                <td>{{ "%.1f"|format(row.f1|float * 100) }}%</td>
+                <td><span class="fp-value">{{ row.false_positives }}</span></td>
+              </tr>
+              {% else %}
+              <tr><td colspan="6">Evaluation results are not available yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="visualizations">
+        <div class="section-heading">
+          <div><p class="eyebrow">A CLOSER LOOK</p><h2>Inside the classifier</h2><p class="section-copy">Visual snapshots of what the model learned and how it performed.</p></div>
+        </div>
+        <div class="plot-grid">
+          {% for plot in plots %}
+          <figure class="card plot-card">
+            <img src="{{ url_for('output_file', filename=plot) }}" alt="{{ plot.replace('_', ' ').replace('.png', '')|title }}" loading="lazy">
+            <figcaption>{{ plot.replace('_', ' ').replace('.png', '')|title }}</figcaption>
+          </figure>
+          {% endfor %}
+        </div>
+      </section>
+      <aside class="disclaimer"><span class="disclaimer-icon" aria-hidden="true">i</span><span><b>A helpful signal, not a guarantee.</b> Always be cautious with unexpected links, payment requests, or personal information.</span></aside>
+    </main>
+
+    <footer><div class="footer-inner"><a class="brand footer-brand" href="/"><span class="brand-mark" aria-hidden="true">E</span><span>Email<span class="brand-light">Shield</span></span></a><span>Thoughtful technology for a safer inbox.</span><span class="footer-tech">Built with Python &amp; scikit-learn</span></div></footer>
+    <script>
+      const form = document.querySelector("#predict-form");
+      const textarea = document.querySelector("#email-text");
+      const count = document.querySelector("#char-count");
+      const result = document.querySelector("#result");
+      const button = document.querySelector("#check-button");
+
+      textarea.addEventListener("input", () => {
+        count.textContent = `${textarea.value.length} / 20000`;
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        result.hidden = false;
+        result.className = "result pending";
+        result.querySelector("#result-badge").textContent = "Checking…";
+        result.querySelector("#result-confidence").textContent = "";
+        document.querySelector("#confidence-bar").style.width = "0%";
+        button.disabled = true;
+        try {
+          const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: textarea.value })
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "Unable to classify this message.");
+          const isSpam = data.label === "Spam";
+          result.className = `result ${isSpam ? "spam" : "ham"}`;
+          result.querySelector("#result-badge").textContent = data.label;
+          result.querySelector("#result-confidence").textContent =
+            `${Math.round(data.confidence * 100)}% confidence`;
+          document.querySelector("#confidence-bar").style.width =
+            `${Math.round(data.confidence * 100)}%`;
+        } catch (error) {
+          result.className = "result error";
+          result.querySelector("#result-badge").textContent = error.message;
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

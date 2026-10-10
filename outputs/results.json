@@ -1,0 +1,61 @@
+{
+  "dataset_source": "real: UCI SMS Spam Collection",
+  "best_model": "Linear SVM",
+  "test_samples": 1030,
+  "models": {
+    "Multinomial Naive Bayes": {
+      "accuracy": 0.9699029126213592,
+      "precision": 1.0,
+      "recall": 0.7578125,
+      "f1": 0.8622222222222222,
+      "false_positive_rate": 0.0,
+      "false_positives": 0,
+      "confusion_matrix": [
+        [
+          902,
+          0
+        ],
+        [
+          31,
+          97
+        ]
+      ]
+    },
+    "Logistic Regression": {
+      "accuracy": 0.9601941747572815,
+      "precision": 0.978021978021978,
+      "recall": 0.6953125,
+      "f1": 0.8127853881278538,
+      "false_positive_rate": 0.0022172949002217295,
+      "false_positives": 2,
+      "confusion_matrix": [
+        [
+          900,
+          2
+        ],
+        [
+          39,
+          89
+        ]
+      ]
+    },
+    "Linear SVM": {
+      "accuracy": 0.9815533980582525,
+      "precision": 0.943089430894309,
+      "recall": 0.90625,
+      "f1": 0.9243027888446215,
+      "false_positive_rate": 0.007760532150776054,
+      "false_positives": 7,
+      "confusion_matrix": [
+        [
+          895,
+          7
+        ],
+        [
+          12,
+          116
+        ]
+      ]
+    }
+  }
+}
